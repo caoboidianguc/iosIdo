@@ -9,14 +9,15 @@ import SwiftUI
 
 struct BaiTap: View {
     @State private var nutbam = false
-    var ten: String
+    @Binding var person: Person
     var baiTap: MucTap = .chay
     var color: [Color] = [.green, .accentColor, .cyan, .indigo, .mint, .orange, .red, .yellow]
     @State private var thoigian: ClosedRange<Date> = Date()...Date().addingTimeInterval(0)
+    var thoigiantap: Double = 1
     
     var body: some View {
         VStack {
-            Text(ten)
+            Text(person.name)
                 .font(.system(size: 75, weight: .light, design: .monospaced))
                 .foregroundColor(color.randomElement())
             Image(systemName: baiTap.rawValue)
@@ -31,16 +32,16 @@ struct BaiTap: View {
                 .font(.system(size: 75, weight: .semibold, design: .rounded))
             Button(action: {
                 nutbam.toggle()
-                thoigian = Date()...Date().addingTimeInterval(2*60)
-                
+                thoigian = Date()...Date().addingTimeInterval(thoigiantap*60)
+                if nutbam == true {
+                    person.points += 1
+                }
             }, label: {
                 demThoiGian(time: thoigian)
             })
-        }.foregroundColor(color.randomElement())
-            .onAppear {
-                nutbam = false
-                
-            }
+        }
+        .foregroundColor(color.randomElement())
+        
     }//body
     func demThoiGian(time: ClosedRange<Date>) -> some View {
         ProgressView(timerInterval: time){
@@ -52,6 +53,6 @@ struct BaiTap: View {
 
 struct BaiTap_Previews: PreviewProvider {
     static var previews: some View {
-        BaiTap(ten: "Hibi", baiTap: MucTap.chay)
+        BaiTap(person: .constant(.mauPerson), baiTap: MucTap.chay)
     }
 }

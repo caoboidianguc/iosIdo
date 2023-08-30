@@ -6,19 +6,21 @@
 //
 
 import Foundation
-
+import SwiftUI
 
 class Person: Codable, ObservableObject {
     var name: String
     var points: Int
     var vanDong: [MucTap] = [MucTap.chay]
+    var avatar: MucTap
     
-    init(name: String, vandong: [MucTap], points: Int = 0 ) {
+    init(name: String, vandong: [MucTap], points: Int = 0, avatar: MucTap) {
         self.name = name
         self.vanDong = vandong
         self.points = points
+        self.avatar = avatar
     }
-    static var mauPerson: Person = Person(name: "Hibi", vandong: mucTap)
+    static var mauPerson: Person = Person(name: "Hibi", vandong: mucTap, avatar: .bong)
     static var mucTap: [MucTap] = [.chay, .cardio, .bong, .gian, .martial, .squats, .plank, .boxing]
 }
 
@@ -53,6 +55,48 @@ enum MucTap: String, CaseIterable, Identifiable, Codable {
             return "Punching"
         case .squats:
             return "Squats"
+        }
+    }
+    
+    var hinh: String {
+        switch self {
+        case .chay:
+            return "tornado"
+        case .cardio:
+            return "snowflake"
+        case .bong:
+            return "bolt"
+        case .gian:
+            return "hare.fill"
+        case .martial:
+            return "pawprint.fill"
+        case .plank:
+            return "bird.fill"
+        case .boxing:
+            return "ladybug.fill"
+        case .squats:
+            return "fish.fill"
+        }
+    }
+    
+    var mau: Color {
+        switch self {
+        case .chay:
+            return .brown
+        case .cardio:
+            return .cyan
+        case .bong:
+            return .yellow
+        case .gian:
+            return .indigo
+        case .martial:
+            return .green
+        case .plank:
+            return .mint
+        case .boxing:
+            return .red
+        case .squats:
+            return .pink
         }
     }
 }

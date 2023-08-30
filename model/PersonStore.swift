@@ -7,9 +7,9 @@
 
 import Foundation
 
-
+@MainActor
 class PersonStore: ObservableObject {
-    @Published var person: Person = Person(name: "", vandong: Person.mucTap)
+    @Published var person: Person = Person(name: "", vandong: Person.mucTap, avatar: .bong)
     
     private static func fileURL() throws -> URL {
         try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent("Person.data")
@@ -19,7 +19,7 @@ class PersonStore: ObservableObject {
         let task = Task<Person, Error> {
             let fileURL = try Self.fileURL()
             guard let data = try? Data(contentsOf: fileURL) else {
-                return Person(name: "No Name", vandong: Person.mucTap)
+                return Person(name: "", vandong: Person.mucTap, avatar: .bong)
             }
             let person = try JSONDecoder().decode(Person.self, from: data)
             return person

@@ -8,9 +8,10 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State var person: Person = Person(name: "Hibi", vandong: Person.mucTap)
+    @Binding var person: Person
     @State private var chon: ChonView?
-    
+    @Environment(\.scenePhase) private var scenePhase
+    let luu: () -> Void
     var body: some View {
         TabView {
             WorkOutView(person: $person)
@@ -18,18 +19,28 @@ struct ContentView: View {
                     Label("Workout", systemImage: "trophy.fill")
                 }
             
-            SubtractionView()
+            MathView(person: $person)
                 .tabItem {
                     Label("Math", systemImage: "function")
                 }
+            
+            Profile(person: $person)
+                .tabItem{
+                    Label("About", systemImage: "person")
+                }
+        }
+        .onChange(of: scenePhase){ pha in
+            if pha == .inactive {
+                luu()
+            }
         }
         
-    }
+    }//body
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ContentView(person: .constant(.mauPerson), luu: {})
     }
 }
 
