@@ -6,3 +6,9 @@
 //
 
 import Foundation
+
+
+struct Hinh: Identifiable, Equatable {
+    var id = UUID()
+    var name: String
+}

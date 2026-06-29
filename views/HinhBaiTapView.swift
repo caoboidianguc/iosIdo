@@ -8,11 +8,14 @@
 import SwiftUI
 
 struct HinhBaiTapView: View {
+    var baiTap: BaiTapTre
+    var isActive: Bool
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        ExerciseMediaView(baiTap: baiTap, isActive: isActive)
     }
 }
 
 #Preview {
-    HinhBaiTapView()
+    HinhBaiTapView(baiTap: .plank, isActive: true)
 }

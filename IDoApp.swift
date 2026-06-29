@@ -9,10 +9,11 @@ import SwiftUI
 
 @main
 struct IDoApp: App {
-    @StateObject var person = PersonStore()
+    @State private var person = PersonStore()
     var body: some Scene {
         WindowGroup {
-            ContentView(person: $person.person){
+            ContentView(person: person)
+                {
                 
                 Task {
                     do{
@@ -22,6 +23,7 @@ struct IDoApp: App {
                     }
                 }
             }
+                .environment(person)
             .task {
                 do {
                     try await person.load()

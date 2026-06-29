@@ -11,17 +11,35 @@ import SwiftUI
 class Person: Codable, ObservableObject {
     var name: String
     var points: Int
-    var vanDong: [MucTap] = [MucTap.chay]
+    var vanDong: [BaiTapTre] = BaiTapTre.macDinh
     var avatar: MucTap
-    
-    init(name: String, vandong: [MucTap], points: Int = 0, avatar: MucTap) {
+
+    init(name: String, vandong: [BaiTapTre], points: Int = 0, avatar: MucTap) {
         self.name = name
         self.vanDong = vandong
         self.points = points
         self.avatar = avatar
     }
-    static var mauPerson: Person = Person(name: "Hibi", vandong: mucTap, avatar: .bong)
-    static var mucTap: [MucTap] = [.chay, .cardio, .bong, .gian, .martial, .squats, .plank, .boxing]
+
+    enum CodingKeys: String, CodingKey {
+        case name, points, vanDong, avatar
+    }
+
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        name = try container.decode(String.self, forKey: .name)
+        points = try container.decode(Int.self, forKey: .points)
+        avatar = try container.decode(MucTap.self, forKey: .avatar)
+        vanDong = (try? container.decode([BaiTapTre].self, forKey: .vanDong)) ?? BaiTapTre.macDinh
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(name, forKey: .name)
+        try container.encode(points, forKey: .points)
+        try container.encode(avatar, forKey: .avatar)
+        try container.encode(vanDong, forKey: .vanDong)
+    }
 }
 
 
@@ -94,9 +112,17 @@ enum MucTap: String, CaseIterable, Identifiable, Codable {
         case .plank:
             return .mint
         case .boxing:
-            return .red
+            return .orange
         case .squats:
             return .pink
         }
     }
+}
+
+extension Person {
+    static var mauPerson: Person = Person(name: "Hibi", vandong: BaiTapTre.macDinh, avatar: .bong)
+    static var mucTap: [MucTap] = [.chay, .cardio, .bong, .gian, .martial, .squats, .plank, .boxing]
+}
+enum LoiDiem: String, Error {
+    case quaNhieuDiem = "Not enough points"
 }

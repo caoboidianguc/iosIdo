@@ -8,26 +8,30 @@
 import SwiftUI
 
 struct AdditionView: View {
-    @State private var math: Math = Math(x: Int.random(in: 1...73),
-                                         y: Int.random(in: 10...42))
+    @State private var math: Math = Math(x: Int.random(in: 42...420),
+                                         y: Int.random(in: 73...730))
     var result: Int {
         return math.x + math.y
     }
     @State private var userInPut = ""
     @State private var check = false
-    
+    @FocusState private var dienO: ConTro?
+    enum ConTro: Hashable {
+        case nhap
+    }
     var body: some View {
         VStack {
             Image(systemName: "hand.point.right")
                 .opacity(check ? 1 : 0)
                 .font(.system(size: 70))
-                .foregroundColor(math.mau.randomElement())
+                .foregroundColor(math.mau)
             VStack(alignment: .trailing) {
                 Text("\(math.x)")
                 Label("  ", systemImage: "plus")
                 Text("\(math.y)")
                 GachNgang()
                 TextField("x?", text: $userInPut)
+                    .focused($dienO, equals: .nhap)
                     .keyboardType(.numbersAndPunctuation)
                     .fixedSize(horizontal: true, vertical: true)
                 Button(action: {

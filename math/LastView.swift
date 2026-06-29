@@ -17,7 +17,10 @@ struct LastView: View {
     }
     @State private var userInPut = ""
     @State private var check = false
-    
+    @FocusState private var dienO: ConTro?
+    enum ConTro: Hashable {
+        case nhap
+    }
     var body: some View {
         VStack {
             Button(action: {
@@ -37,6 +40,7 @@ struct LastView: View {
                     Text("\(math.y)")
                     GachNgang()
                     TextField("x?", text: $userInPut)
+                        .focused($dienO, equals: .nhap)
                         .keyboardType(.numbersAndPunctuation)
                         .fixedSize(horizontal: true, vertical: true)
                     Button(action: {

@@ -15,33 +15,44 @@ struct MultiplyView: View {
     }
     @State private var userInPut = ""
     @State private var check = false
-    
-    
+    @FocusState private var dienO: ConTro?
+    enum ConTro: Hashable {
+        case nhap
+    }
+//    var index: Int = Int.random(in: 0...Math.loatHinh.count)
     var body: some View {
-        VStack{
-            Image(systemName: "hand.point.right")
-                .opacity(check ? 1 : 0)
-                .font(.system(size: 70))
-                .foregroundColor(math.mau.randomElement())
-            VStack(alignment: .trailing) {
-                Text("\(math.x)")
-                Label("  ", systemImage: "multiply")
-                Text("\(math.y)")
-                GachNgang()
-                TextField("x?", text: $userInPut)
-                    .keyboardType(.numbersAndPunctuation)
-                    .fixedSize(horizontal: true, vertical: true)
-                Button(action: {
-                    kiemtra()
-                }, label: {
-                    Image(systemName: check ? "brain.head.profile" : "questionmark")
-                        .foregroundColor(check ? .green : .gray)
-                })
+//        VStack{
+//            HStack{
+//                ForEach(0..<math.x, id:\.self){ _ in
+//                    HinhMinhHoa(name: Math.loatHinh[index].name)
+//                }
+//            }
+            VStack{
+                Image(systemName: "hand.point.right")
+                    .opacity(check ? 1 : 0)
+                    .font(.system(size: 70))
+                    .foregroundColor(math.mau)
+                VStack(alignment: .trailing) {
+                    Text("\(math.x)")
+                    Label("  ", systemImage: "multiply")
+                    Text("\(math.y)")
+                    GachNgang()
+                    TextField("x?", text: $userInPut)
+                        .focused($dienO, equals: .nhap)
+                        .keyboardType(.numbersAndPunctuation)
+                        .fixedSize(horizontal: true, vertical: true)
+                    Button(action: {
+                        kiemtra()
+                    }, label: {
+                        Image(systemName: check ? "brain.head.profile" : "questionmark")
+                            .foregroundColor(check ? .green : .gray)
+                    })
+                }
+                .padding(15)
+                .font(.system(size: 60))
+                
             }
-            .padding(15)
-            .font(.system(size: 60))
-            
-        }
+//        }
         
         
     }//body

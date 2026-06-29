@@ -8,29 +8,32 @@
 import SwiftUI
 
 struct ContentView: View {
-    @Binding var person: Person
-    @State private var chon: ChonView?
+    @Bindable var person: PersonStore
+    @State private var chon: ChonView = .profile
     @Environment(\.scenePhase) private var scenePhase
     let luu: () -> Void
     var body: some View {
-        TabView {
-            WorkOutView(person: $person)
+        TabView(selection: $chon) {
+            WorkOutView(person: $person.person)
                 .tabItem {
                     Label("Workout", systemImage: "trophy.fill")
                 }
+                .tag(ChonView.workout)
             
-            MathView(person: $person)
+            MathView(person: $person.person)
                 .tabItem {
                     Label("Math", systemImage: "function")
                 }
+                .tag(ChonView.math)
             
-            Profile(person: $person)
+            Profile(person: $person.person)
                 .tabItem{
                     Label("About", systemImage: "person")
                 }
+                .tag(ChonView.profile)
         }
-        .onChange(of: scenePhase){ pha in
-            if pha == .inactive {
+        .onChange(of: scenePhase){
+            if scenePhase == .inactive {
                 luu()
             }
         }
@@ -40,11 +43,12 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(person: .constant(.mauPerson), luu: {})
+        ContentView(person: PersonStore(), luu: {})
     }
 }
 
 enum ChonView {
     case workout
     case math
+    case profile
 }

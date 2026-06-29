@@ -9,9 +9,12 @@ import SwiftUI
 
 struct Profile: View {
     @Binding var person: Person
+    @Environment(\.dismiss) private var dismiss
     @State private var chonAvatar = false
+    @State private var claimDiem = false
     @State private var layTen = false
     @State private var name = ""
+    
     var body: some View {
         NavigationStack {
             VStack {
@@ -30,7 +33,7 @@ struct Profile: View {
                 if person.points > 0 {
                     Text("You gain \(person.points) credit from\nMath and workout")
                         .font(.system(.title))
-                }else{
+                } else{
                     Text("You can earn points from \nFun Math or exercises")
                         .font(.system(.title))
                 }
@@ -47,11 +50,25 @@ struct Profile: View {
                     ChonAvatarView(person: $person)
                 }
             }
+            .sheet(isPresented: $claimDiem, content: {
+                NavigationStack {
+                    ClaimCreditView(person: $person)
+                        .presentationDetents([.medium, .large])
+                }
+            })
+            
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading){
+                ToolbarItem(placement: .topBarLeading){
                     Button(action: {layTen = true}, label: {
                         Image(systemName: person.name.isEmpty ? "person.fill.badge.plus" : person.avatar.hinh)
                             .foregroundStyle(person.name.isEmpty ? .black : person.avatar.mau)
+                            .font(.largeTitle)
+                    })
+                }
+                ToolbarItem(placement: .topBarTrailing){
+                    Button(action: {claimDiem = true}, label: {
+                        Image(systemName: "x.squareroot")
+                            .font(.largeTitle)
                     })
                 }
             }
@@ -64,3 +81,5 @@ struct Profile_Previews: PreviewProvider {
         Profile(person: .constant(.mauPerson))
     }
 }
+
+
